@@ -12,10 +12,6 @@
 <body>
   <main class="page">
 
-    <!-- =========================
-         ヘッダー
-    ========================== -->
-
     <section class="hero">
       <p class="hero-label">
         HOUSING LOAN SIMULATOR
@@ -43,10 +39,6 @@
     </section>
 
 
-    <!-- =========================
-         返済条件
-    ========================== -->
-
     <section class="form-card">
       <div class="section-heading">
         <div>
@@ -60,7 +52,6 @@
         </div>
       </div>
 
-
       <div
         id="validation-summary"
         class="validation-summary"
@@ -68,8 +59,6 @@
       >
       </div>
 
-
-      <!-- 家賃 -->
 
       <div class="form-group">
         <label for="rent">
@@ -96,8 +85,6 @@
       </div>
 
 
-      <!-- 捻出費 -->
-
       <div class="form-group">
         <label for="additional-payment">
           捻出費
@@ -118,8 +105,6 @@
       </div>
 
 
-      <!-- 月々返済可能額 -->
-
       <div class="calculation-result">
         <span>
           月々返済可能額
@@ -133,8 +118,6 @@
         </strong>
       </div>
 
-
-      <!-- 自己資金 -->
 
       <div class="form-group">
         <label for="own-funds">
@@ -155,8 +138,6 @@
         </div>
       </div>
 
-
-      <!-- 返済期間・金利 -->
 
       <div class="loan-condition-row">
 
@@ -203,29 +184,25 @@
       </div>
 
 
-      <!-- 住宅ローン -->
-
-      <div class="form-group">
-        <label for="loan-amount-input">
-          住宅ローン
-        </label>
-
-        <div class="input-with-unit">
-          <input
-            type="number"
-            id="loan-amount-input"
-            min="0"
-            placeholder="入力してください"
-          >
-
+      <div class="loan-calculation-result">
+        <div>
           <span>
-            万円
+            住宅ローン
           </span>
+
+          <p>
+            月々返済可能額・返済期間・金利から自動算出
+          </p>
         </div>
+
+        <strong>
+          <span id="loan-amount">
+            －
+          </span>
+          万円
+        </strong>
       </div>
 
-
-      <!-- 総予算 -->
 
       <div class="total-result">
         <div>
@@ -249,10 +226,6 @@
     </section>
 
 
-    <!-- =========================
-         予算の内訳
-    ========================== -->
-
     <section class="form-card">
       <div class="section-heading">
         <div>
@@ -271,8 +244,6 @@
       </div>
 
 
-      <!-- 総予算 -->
-
       <div class="budget-summary">
         <span>
           総予算
@@ -286,8 +257,6 @@
         </strong>
       </div>
 
-
-      <!-- 建物 -->
 
       <div class="form-group">
         <label for="building-price">
@@ -309,8 +278,6 @@
       </div>
 
 
-      <!-- 諸経費 -->
-
       <div class="form-group">
         <label for="expenses">
           諸経費
@@ -331,8 +298,6 @@
       </div>
 
 
-      <!-- その他費用 -->
-
       <div class="form-group">
         <label>
           その他費用
@@ -340,7 +305,6 @@
 
         <details class="other-cost-details">
           <summary class="other-cost-summary">
-
             <span>
               その他費用 合計
             </span>
@@ -351,7 +315,6 @@
               </span>
               万円
             </strong>
-
           </summary>
 
 
@@ -359,10 +322,7 @@
 
             <div id="other-cost-list">
 
-              <!-- 外構 -->
-
               <div class="other-cost-row">
-
                 <input
                   type="text"
                   class="other-cost-name"
@@ -376,9 +336,7 @@
                     min="0"
                   >
 
-                  <span>
-                    万円
-                  </span>
+                  <span>万円</span>
                 </div>
 
                 <button
@@ -387,14 +345,10 @@
                 >
                   削除
                 </button>
-
               </div>
 
 
-              <!-- 付帯工事 -->
-
               <div class="other-cost-row">
-
                 <input
                   type="text"
                   class="other-cost-name"
@@ -408,9 +362,7 @@
                     min="0"
                   >
 
-                  <span>
-                    万円
-                  </span>
+                  <span>万円</span>
                 </div>
 
                 <button
@@ -419,14 +371,10 @@
                 >
                   削除
                 </button>
-
               </div>
 
 
-              <!-- 地盤改良 -->
-
               <div class="other-cost-row">
-
                 <input
                   type="text"
                   class="other-cost-name"
@@ -440,9 +388,7 @@
                     min="0"
                   >
 
-                  <span>
-                    万円
-                  </span>
+                  <span>万円</span>
                 </div>
 
                 <button
@@ -451,14 +397,10 @@
                 >
                   削除
                 </button>
-
               </div>
 
 
-              <!-- 浄化槽 -->
-
               <div class="other-cost-row">
-
                 <input
                   type="text"
                   class="other-cost-name"
@@ -472,9 +414,7 @@
                     min="0"
                   >
 
-                  <span>
-                    万円
-                  </span>
+                  <span>万円</span>
                 </div>
 
                 <button
@@ -483,14 +423,10 @@
                 >
                   削除
                 </button>
-
               </div>
 
 
-              <!-- 資材高騰 -->
-
               <div class="other-cost-row">
-
                 <input
                   type="text"
                   class="other-cost-name"
@@ -504,9 +440,7 @@
                     min="0"
                   >
 
-                  <span>
-                    万円
-                  </span>
+                  <span>万円</span>
                 </div>
 
                 <button
@@ -515,7 +449,32 @@
                 >
                   削除
                 </button>
+              </div>
 
+
+              <div class="other-cost-row">
+                <input
+                  type="text"
+                  class="other-cost-name"
+                  value="オプション"
+                >
+
+                <div class="input-with-unit">
+                  <input
+                    type="number"
+                    class="other-cost-amount"
+                    min="0"
+                  >
+
+                  <span>万円</span>
+                </div>
+
+                <button
+                  type="button"
+                  class="delete-cost-button"
+                >
+                  削除
+                </button>
               </div>
 
             </div>
@@ -533,8 +492,6 @@
         </details>
       </div>
 
-
-      <!-- 土地 -->
 
       <div class="land-result">
         <div>
@@ -558,10 +515,6 @@
     </section>
 
 
-    <!-- =========================
-         試算結果
-    ========================== -->
-
     <section class="result-card">
 
       <div class="section-heading">
@@ -581,8 +534,6 @@
       </div>
 
 
-      <!-- 予算オーバー -->
-
       <div
         id="budget-warning"
         class="budget-warning"
@@ -595,10 +546,6 @@
 
       <div class="result-main">
 
-        <!-- =========================
-             円グラフ
-        ========================== -->
-
         <div class="chart-area">
 
           <div
@@ -606,64 +553,44 @@
             class="budget-chart"
           >
 
-            <!-- 建物 -->
-
             <div
               id="building-chart-label"
               class="chart-slice-label"
             >
-              <span>
-                建物
-              </span>
+              <span>建物</span>
 
               <strong>
-                <span id="building-chart-amount">
-                  0
-                </span>
+                <span id="building-chart-amount">0</span>
                 万円
               </strong>
             </div>
 
-
-            <!-- 土地 -->
 
             <div
               id="land-chart-label"
               class="chart-slice-label"
             >
-              <span>
-                土地
-              </span>
+              <span>土地</span>
 
               <strong>
-                <span id="land-chart-amount">
-                  0
-                </span>
+                <span id="land-chart-amount">0</span>
                 万円
               </strong>
             </div>
 
-
-            <!-- 諸経費 -->
 
             <div
               id="cost-chart-label"
               class="chart-slice-label"
             >
-              <span>
-                諸経費等
-              </span>
+              <span>諸経費等</span>
 
               <strong>
-                <span id="cost-chart-amount">
-                  0
-                </span>
+                <span id="cost-chart-amount">0</span>
                 万円
               </strong>
             </div>
 
-
-            <!-- 中央 -->
 
             <div class="chart-center">
               <span>
@@ -681,22 +608,16 @@
           </div>
 
 
-          <!-- 凡例 -->
-
           <div class="chart-legend">
 
             <div class="legend-item">
               <span class="legend-color building-color"></span>
 
               <div>
-                <span>
-                  建物
-                </span>
+                <span>建物</span>
 
                 <strong>
-                  <span id="chart-building-price">
-                    0
-                  </span>
+                  <span id="chart-building-price">0</span>
                   万円
                 </strong>
               </div>
@@ -707,14 +628,10 @@
               <span class="legend-color land-color"></span>
 
               <div>
-                <span>
-                  土地
-                </span>
+                <span>土地</span>
 
                 <strong>
-                  <span id="chart-land-price">
-                    －
-                  </span>
+                  <span id="chart-land-price">－</span>
                   万円
                 </strong>
               </div>
@@ -725,14 +642,10 @@
               <span class="legend-color cost-color"></span>
 
               <div>
-                <span>
-                  諸経費等
-                </span>
+                <span>諸経費等</span>
 
                 <strong>
-                  <span id="chart-other-price">
-                    0
-                  </span>
+                  <span id="chart-other-price">0</span>
                   万円
                 </strong>
               </div>
@@ -741,10 +654,6 @@
           </div>
         </div>
 
-
-        <!-- =========================
-             右側結果
-        ========================== -->
 
         <div class="result-list">
 
@@ -807,8 +716,6 @@
       </div>
 
 
-      <!-- 総予算 -->
-
       <div class="total-result">
         <div>
           <span>
@@ -829,8 +736,6 @@
       </div>
 
 
-      <!-- 月々返済額 -->
-
       <div class="monthly-payment-result">
         <div>
           <span>
@@ -838,7 +743,7 @@
           </span>
 
           <p>
-            住宅ローン・返済期間・金利から算出
+            自動計算した住宅ローンから算出
           </p>
         </div>
 
@@ -850,30 +755,6 @@
         </strong>
       </div>
 
-
-      <!-- 差額 -->
-
-      <div
-        id="monthly-difference-box"
-        class="monthly-difference-result"
-      >
-        <div>
-          <span>
-            現在の支払い目安との差
-          </span>
-
-          <p id="monthly-difference-message">
-            家賃＋捻出費と比較します
-          </p>
-        </div>
-
-        <strong>
-          <span id="monthly-difference">
-            －
-          </span>
-          円
-        </strong>
-      </div>
     </section>
   </main>
 
