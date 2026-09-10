@@ -11,9 +11,6 @@ const additionalPaymentInput =
 const ownFundsInput =
   document.getElementById("own-funds");
 
-const loanAmountInput =
-  document.getElementById("loan-amount-input");
-
 const repaymentYearsInput =
   document.getElementById("repayment-years");
 
@@ -34,6 +31,9 @@ const expensesInput =
 const monthlyBudgetElement =
   document.getElementById("monthly-budget");
 
+const loanAmountElement =
+  document.getElementById("loan-amount");
+
 const totalBudgetElement =
   document.getElementById("total-budget");
 
@@ -45,19 +45,6 @@ const budgetSummaryTotalElement =
 
 const landPriceElement =
   document.getElementById("land-price");
-
-const monthlyDifferenceElement =
-  document.getElementById("monthly-difference");
-
-const monthlyDifferenceMessageElement =
-  document.getElementById(
-    "monthly-difference-message"
-  );
-
-const monthlyDifferenceBox =
-  document.getElementById(
-    "monthly-difference-box"
-  );
 
 
 /* =========================
@@ -80,37 +67,23 @@ const chartOtherPriceElement =
   document.getElementById("chart-other-price");
 
 
-/* 円グラフ内ラベル */
-
 const buildingChartLabel =
-  document.getElementById(
-    "building-chart-label"
-  );
+  document.getElementById("building-chart-label");
 
 const landChartLabel =
-  document.getElementById(
-    "land-chart-label"
-  );
+  document.getElementById("land-chart-label");
 
 const costChartLabel =
-  document.getElementById(
-    "cost-chart-label"
-  );
+  document.getElementById("cost-chart-label");
 
 const buildingChartAmount =
-  document.getElementById(
-    "building-chart-amount"
-  );
+  document.getElementById("building-chart-amount");
 
 const landChartAmount =
-  document.getElementById(
-    "land-chart-amount"
-  );
+  document.getElementById("land-chart-amount");
 
 const costChartAmount =
-  document.getElementById(
-    "cost-chart-amount"
-  );
+  document.getElementById("cost-chart-amount");
 
 
 /* =========================
@@ -118,67 +91,46 @@ const costChartAmount =
 ========================= */
 
 const resultLoanAmountElement =
-  document.getElementById(
-    "result-loan-amount"
-  );
+  document.getElementById("result-loan-amount");
 
 const resultOwnFundsElement =
-  document.getElementById(
-    "result-own-funds"
-  );
+  document.getElementById("result-own-funds");
 
 const resultYearsElement =
-  document.getElementById(
-    "result-years"
-  );
+  document.getElementById("result-years");
 
 const resultRateElement =
-  document.getElementById(
-    "result-rate"
-  );
+  document.getElementById("result-rate");
 
 const resultTotalBudgetElement =
-  document.getElementById(
-    "result-total-budget"
-  );
+  document.getElementById("result-total-budget");
 
 
 /* =========================
-   警告・ボタン
+   その他
 ========================= */
 
 const budgetWarningElement =
-  document.getElementById(
-    "budget-warning"
-  );
+  document.getElementById("budget-warning");
 
 const validationSummaryElement =
-  document.getElementById(
-    "validation-summary"
-  );
+  document.getElementById("validation-summary");
 
 const otherCostList =
-  document.getElementById(
-    "other-cost-list"
-  );
+  document.getElementById("other-cost-list");
 
 const otherCostTotalElement =
-  document.getElementById(
-    "other-cost-total"
-  );
+  document.getElementById("other-cost-total");
 
 const addCostButton =
-  document.getElementById(
-    "add-cost-button"
-  );
+  document.getElementById("add-cost-button");
 
 const resetButton =
-  document.getElementById(
-    "reset-button"
-  );
+  document.getElementById("reset-button");
+
 
 /* =========================
-   値が入力されているか
+   入力されているか
 ========================= */
 
 function hasValue(input) {
@@ -202,8 +154,7 @@ function getOtherCostsTotal() {
   let total = 0;
 
   inputs.forEach((input) => {
-    total +=
-      Number(input.value) || 0;
+    total += Number(input.value) || 0;
   });
 
   return total;
@@ -211,8 +162,69 @@ function getOtherCostsTotal() {
 
 
 /* =========================
-   月々返済額
-   元利均等返済
+   月々返済可能額から
+   住宅ローン元金を逆算
+========================= */
+
+function calculateLoanAmount(
+  monthlyPayment,
+  years,
+  annualInterestRate
+) {
+  if (
+    monthlyPayment <= 0 ||
+    years <= 0 ||
+    annualInterestRate < 0
+  ) {
+    return 0;
+  }
+
+  const numberOfPayments =
+    years * 12;
+
+  const monthlyInterestRate =
+    annualInterestRate /
+    100 /
+    12;
+
+
+  /*
+    金利0%の場合
+
+    借入額 =
+    月々返済額 × 支払回数
+  */
+
+  if (monthlyInterestRate === 0) {
+    return (
+      monthlyPayment *
+      numberOfPayments
+    );
+  }
+
+
+  /*
+    元利均等返済の式を逆算して
+    借入元金を求める
+  */
+
+  return (
+    monthlyPayment *
+    (
+      1 -
+      Math.pow(
+        1 + monthlyInterestRate,
+        -numberOfPayments
+      )
+    ) /
+    monthlyInterestRate
+  );
+}
+
+
+/* =========================
+   住宅ローンから
+   月々返済額を計算
 ========================= */
 
 function calculateMonthlyPayment(
@@ -229,27 +241,19 @@ function calculateMonthlyPayment(
   }
 
 
-  // 万円 → 円
   const principal =
     loanAmount * 10000;
 
-
-  // 支払い回数
   const numberOfPayments =
     years * 12;
 
-
-  // 年利 → 月利
   const monthlyInterestRate =
     annualInterestRate /
     100 /
     12;
 
 
-  // 金利0%
-  if (
-    monthlyInterestRate === 0
-  ) {
+  if (monthlyInterestRate === 0) {
     return (
       principal /
       numberOfPayments
@@ -257,7 +261,6 @@ function calculateMonthlyPayment(
   }
 
 
-  // 元利均等返済
   return (
     principal *
     (
@@ -288,7 +291,6 @@ function validateInputs() {
     rentInput,
     additionalPaymentInput,
     ownFundsInput,
-    loanAmountInput,
     repaymentYearsInput,
     interestRateInput,
     buildingPriceInput,
@@ -312,6 +314,7 @@ function validateInputs() {
       return;
     }
 
+
     if (
       hasValue(input) &&
       Number(input.value) < 0
@@ -329,9 +332,7 @@ function validateInputs() {
 
   if (
     hasValue(repaymentYearsInput) &&
-    Number(
-      repaymentYearsInput.value
-    ) <= 0
+    Number(repaymentYearsInput.value) <= 0
   ) {
     repaymentYearsInput.classList.add(
       "input-error"
@@ -368,18 +369,18 @@ function validateInputs() {
     [...new Set(errors)];
 
 
-  if (
-    validationSummaryElement
-  ) {
-    if (
-      uniqueErrors.length === 0
-    ) {
+  if (validationSummaryElement) {
+
+    if (uniqueErrors.length === 0) {
+
       validationSummaryElement.hidden =
         true;
 
       validationSummaryElement.innerHTML =
         "";
+
     } else {
+
       validationSummaryElement.hidden =
         false;
 
@@ -394,14 +395,12 @@ function validateInputs() {
   }
 
 
-  return (
-    uniqueErrors.length === 0
-  );
+  return uniqueErrors.length === 0;
 }
 
 
 /* =========================
-   円グラフのラベル配置
+   円グラフラベル
 ========================= */
 
 function positionChartLabel(
@@ -426,11 +425,6 @@ function positionChartLabel(
     Math.PI /
     180;
 
-
-  /*
-    8%未満なら、
-    扇形の外側へ出す
-  */
 
   const isSmall =
     percent < 0.08;
@@ -466,87 +460,6 @@ function positionChartLabel(
 
 
 /* =========================
-   差額表示
-========================= */
-
-function updateMonthlyDifference(
-  monthlyBudget,
-  monthlyPayment
-) {
-  if (
-    !monthlyDifferenceElement ||
-    !monthlyDifferenceMessageElement ||
-    !monthlyDifferenceBox
-  ) {
-    return;
-  }
-
-
-  monthlyDifferenceBox.classList.remove(
-    "is-over",
-    "is-under"
-  );
-
-
-  if (
-    monthlyPayment <= 0 ||
-    monthlyBudget <= 0
-  ) {
-    monthlyDifferenceElement.textContent =
-      "－";
-
-    monthlyDifferenceMessageElement.textContent =
-      "家賃＋捻出費と比較します";
-
-    return;
-  }
-
-
-  const difference =
-    Math.round(
-      monthlyPayment -
-      monthlyBudget
-    );
-
-
-  if (difference > 0) {
-    monthlyDifferenceElement.textContent =
-      `+${difference.toLocaleString()}`;
-
-    monthlyDifferenceMessageElement.textContent =
-      `現在の支払い目安より月々${difference.toLocaleString()}円高くなります`;
-
-    monthlyDifferenceBox.classList.add(
-      "is-over"
-    );
-
-  } else if (difference < 0) {
-
-    const amount =
-      Math.abs(difference);
-
-    monthlyDifferenceElement.textContent =
-      `-${amount.toLocaleString()}`;
-
-    monthlyDifferenceMessageElement.textContent =
-      `現在の支払い目安より月々${amount.toLocaleString()}円低くなります`;
-
-    monthlyDifferenceBox.classList.add(
-      "is-under"
-    );
-
-  } else {
-
-    monthlyDifferenceElement.textContent =
-      "0";
-
-    monthlyDifferenceMessageElement.textContent =
-      "現在の支払い目安と同額です";
-  }
-}
-
-
-/* =========================
    メイン計算
 ========================= */
 
@@ -556,52 +469,25 @@ function calculate() {
 
 
   const rent =
-    Number(
-      rentInput?.value
-    ) || 0;
-
+    Number(rentInput?.value) || 0;
 
   const additionalPayment =
-    Number(
-      additionalPaymentInput?.value
-    ) || 0;
-
+    Number(additionalPaymentInput?.value) || 0;
 
   const ownFunds =
-    Number(
-      ownFundsInput?.value
-    ) || 0;
-
-
-  const loanAmount =
-    Number(
-      loanAmountInput?.value
-    ) || 0;
-
+    Number(ownFundsInput?.value) || 0;
 
   const repaymentYears =
-    Number(
-      repaymentYearsInput?.value
-    ) || 0;
-
+    Number(repaymentYearsInput?.value) || 0;
 
   const annualInterestRate =
-    Number(
-      interestRateInput?.value
-    ) || 0;
-
+    Number(interestRateInput?.value) || 0;
 
   const buildingPrice =
-    Number(
-      buildingPriceInput?.value
-    ) || 0;
-
+    Number(buildingPriceInput?.value) || 0;
 
   const expenses =
-    Number(
-      expensesInput?.value
-    ) || 0;
-
+    Number(expensesInput?.value) || 0;
 
   const otherCosts =
     getOtherCostsTotal();
@@ -618,9 +504,66 @@ function calculate() {
 
   const hasMonthlyBudget =
     hasValue(rentInput) ||
-    hasValue(
-      additionalPaymentInput
-    );
+    hasValue(additionalPaymentInput);
+
+
+  if (monthlyBudgetElement) {
+    monthlyBudgetElement.textContent =
+      hasMonthlyBudget
+        ? monthlyBudget.toLocaleString()
+        : "－";
+  }
+
+
+  /* =========================
+     住宅ローン自動計算
+  ========================= */
+
+  const hasLoanCalculation =
+    hasMonthlyBudget &&
+    monthlyBudget > 0 &&
+    hasValue(repaymentYearsInput) &&
+    repaymentYears > 0 &&
+    hasValue(interestRateInput) &&
+    annualInterestRate >= 0;
+
+
+  let loanAmount = 0;
+
+
+  if (hasLoanCalculation) {
+
+    const loanAmountYen =
+      calculateLoanAmount(
+        monthlyBudget,
+        repaymentYears,
+        annualInterestRate
+      );
+
+
+    /*
+      万円単位で切り捨てる。
+
+      例：
+      2,777.8万円
+      ↓
+      2,777万円
+    */
+
+    loanAmount =
+      Math.floor(
+        loanAmountYen /
+        10000
+      );
+  }
+
+
+  if (loanAmountElement) {
+    loanAmountElement.textContent =
+      hasLoanCalculation
+        ? loanAmount.toLocaleString()
+        : "－";
+  }
 
 
   /* =========================
@@ -633,19 +576,37 @@ function calculate() {
 
 
   const hasTotalBudget =
-    hasValue(loanAmountInput) ||
+    hasLoanCalculation ||
     hasValue(ownFundsInput);
+
+
+  if (totalBudgetElement) {
+    totalBudgetElement.textContent =
+      hasTotalBudget
+        ? totalBudget.toLocaleString()
+        : "－";
+  }
+
+
+  if (budgetSummaryTotalElement) {
+    budgetSummaryTotalElement.textContent =
+      hasTotalBudget
+        ? totalBudget.toLocaleString()
+        : "－";
+  }
+
+
+  if (resultTotalBudgetElement) {
+    resultTotalBudgetElement.textContent =
+      hasTotalBudget
+        ? totalBudget.toLocaleString()
+        : "－";
+  }
 
 
   /* =========================
      月々返済額
   ========================= */
-
-  const hasLoanCalculation =
-    hasValue(loanAmountInput) &&
-    hasValue(repaymentYearsInput) &&
-    hasValue(interestRateInput);
-
 
   const monthlyPayment =
     hasLoanCalculation
@@ -655,6 +616,26 @@ function calculate() {
           annualInterestRate
         )
       : 0;
+
+
+  if (monthlyPaymentElement) {
+    monthlyPaymentElement.textContent =
+      hasLoanCalculation
+        ? Math.round(
+            monthlyPayment
+          ).toLocaleString()
+        : "－";
+  }
+
+
+  /* =========================
+     その他費用
+  ========================= */
+
+  if (otherCostTotalElement) {
+    otherCostTotalElement.textContent =
+      otherCosts.toLocaleString();
+  }
 
 
   /* =========================
@@ -668,90 +649,6 @@ function calculate() {
     otherCosts;
 
 
-  /* =========================
-     月々返済可能額表示
-  ========================= */
-
-  if (monthlyBudgetElement) {
-    monthlyBudgetElement.textContent =
-      hasMonthlyBudget
-        ? monthlyBudget.toLocaleString()
-        : "－";
-  }
-
-
-  /* =========================
-     総予算表示
-  ========================= */
-
-  if (totalBudgetElement) {
-    totalBudgetElement.textContent =
-      hasTotalBudget
-        ? totalBudget.toLocaleString()
-        : "－";
-  }
-
-
-  if (
-    budgetSummaryTotalElement
-  ) {
-    budgetSummaryTotalElement.textContent =
-      hasTotalBudget
-        ? totalBudget.toLocaleString()
-        : "－";
-  }
-
-
-  if (
-    resultTotalBudgetElement
-  ) {
-    resultTotalBudgetElement.textContent =
-      hasTotalBudget
-        ? totalBudget.toLocaleString()
-        : "－";
-  }
-
-
-  /* =========================
-     月々返済額表示
-  ========================= */
-
-  if (monthlyPaymentElement) {
-    monthlyPaymentElement.textContent =
-      hasLoanCalculation
-        ? Math.round(
-            monthlyPayment
-          ).toLocaleString()
-        : "－";
-  }
-
-
-  /* =========================
-     差額
-  ========================= */
-
-  updateMonthlyDifference(
-    monthlyBudget,
-    monthlyPayment
-  );
-
-
-  /* =========================
-     その他費用
-  ========================= */
-
-  if (
-    otherCostTotalElement
-  ) {
-    otherCostTotalElement.textContent =
-      otherCosts.toLocaleString();
-  }
-
-
-  /* =========================
-     土地価格表示
-  ========================= */
-
   if (landPriceElement) {
     landPriceElement.textContent =
       hasTotalBudget
@@ -764,19 +661,15 @@ function calculate() {
      試算結果一覧
   ========================= */
 
-  if (
-    resultLoanAmountElement
-  ) {
+  if (resultLoanAmountElement) {
     resultLoanAmountElement.textContent =
-      hasValue(loanAmountInput)
+      hasLoanCalculation
         ? loanAmount.toLocaleString()
         : "－";
   }
 
 
-  if (
-    resultOwnFundsElement
-  ) {
+  if (resultOwnFundsElement) {
     resultOwnFundsElement.textContent =
       hasValue(ownFundsInput)
         ? ownFunds.toLocaleString()
@@ -786,9 +679,7 @@ function calculate() {
 
   if (resultYearsElement) {
     resultYearsElement.textContent =
-      hasValue(
-        repaymentYearsInput
-      )
+      hasValue(repaymentYearsInput)
         ? repaymentYears.toLocaleString()
         : "－";
   }
@@ -796,9 +687,7 @@ function calculate() {
 
   if (resultRateElement) {
     resultRateElement.textContent =
-      hasValue(
-        interestRateInput
-      )
+      hasValue(interestRateInput)
         ? annualInterestRate.toLocaleString()
         : "－";
   }
@@ -808,9 +697,7 @@ function calculate() {
      土地マイナス警告
   ========================= */
 
-  if (
-    budgetWarningElement
-  ) {
+  if (budgetWarningElement) {
     budgetWarningElement.hidden =
       !(
         hasTotalBudget &&
@@ -828,9 +715,7 @@ function calculate() {
     otherCosts;
 
 
-  if (
-    chartTotalBudgetElement
-  ) {
+  if (chartTotalBudgetElement) {
     chartTotalBudgetElement.textContent =
       hasTotalBudget
         ? totalBudget.toLocaleString()
@@ -838,17 +723,13 @@ function calculate() {
   }
 
 
-  if (
-    chartBuildingPriceElement
-  ) {
+  if (chartBuildingPriceElement) {
     chartBuildingPriceElement.textContent =
       buildingPrice.toLocaleString();
   }
 
 
-  if (
-    chartLandPriceElement
-  ) {
+  if (chartLandPriceElement) {
     chartLandPriceElement.textContent =
       hasTotalBudget
         ? Math.max(
@@ -859,9 +740,7 @@ function calculate() {
   }
 
 
-  if (
-    chartOtherPriceElement
-  ) {
+  if (chartOtherPriceElement) {
     chartOtherPriceElement.textContent =
       totalCosts.toLocaleString();
   }
@@ -877,11 +756,9 @@ function calculate() {
       buildingPrice /
       totalBudget;
 
-
     const landPercent =
       landPrice /
       totalBudget;
-
 
     const costPercent =
       totalCosts /
@@ -891,7 +768,6 @@ function calculate() {
     const buildingEnd =
       buildingPercent *
       360;
-
 
     const landEnd =
       buildingEnd +
@@ -917,11 +793,7 @@ function calculate() {
       `;
 
 
-    /* 金額 */
-
-    if (
-      buildingChartAmount
-    ) {
+    if (buildingChartAmount) {
       buildingChartAmount.textContent =
         buildingPrice.toLocaleString();
     }
@@ -938,8 +810,6 @@ function calculate() {
         totalCosts.toLocaleString();
     }
 
-
-    /* ラベル位置 */
 
     positionChartLabel(
       buildingChartLabel,
@@ -965,11 +835,7 @@ function calculate() {
     );
 
 
-    /* 0円なら非表示 */
-
-    if (
-      buildingChartLabel
-    ) {
+    if (buildingChartLabel) {
       buildingChartLabel.style.display =
         buildingPrice > 0
           ? "flex"
@@ -1145,17 +1011,18 @@ if (resetButton) {
           'input[type="number"]'
         )
         .forEach((input) => {
+
           input.value = "";
 
           input.classList.remove(
             "input-error"
           );
+
         });
 
 
-      if (
-        validationSummaryElement
-      ) {
+      if (validationSummaryElement) {
+
         validationSummaryElement.hidden =
           true;
 
@@ -1168,6 +1035,7 @@ if (resetButton) {
     }
   );
 }
+
 
 /* =========================
    初期表示
