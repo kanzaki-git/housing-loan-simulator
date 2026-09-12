@@ -337,6 +337,44 @@ body {
   color: #0f3556;
 }
 
+/* =========================
+   建物価格（税込）自動計算
+========================= */
+
+.building-tax-result {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  margin: -4px 0 20px;
+  padding: 18px 22px;
+
+  border-radius: 18px;
+
+  background-color: #eef4fb;
+}
+
+.building-tax-result > div > span {
+  font-size: 16px;
+  font-weight: 800;
+
+  color: #12304d;
+}
+
+.building-tax-result p {
+  margin: 4px 0 0;
+
+  font-size: 11px;
+
+  color: #718096;
+}
+
+.building-tax-result strong {
+  font-size: 28px;
+
+  color: #0f3556;
+}
 
 /* =========================
    総予算
@@ -1004,5 +1042,11 @@ body {
   .monthly-payment-result,
   .total-result {
     gap: 16px;
+  }
+
+  .building-tax-result {
+    align-items: flex-start;
+
+    gap: 14px;
   }
 }
