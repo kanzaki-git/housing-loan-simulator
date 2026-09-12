@@ -20,6 +20,11 @@ const interestRateInput =
 const buildingPriceInput =
   document.getElementById("building-price");
 
+const buildingPriceTaxIncludedElement =
+  document.getElementById(
+    "building-price-tax-included"
+  );
+
 const expensesInput =
   document.getElementById("expenses");
 
@@ -41,7 +46,9 @@ const monthlyPaymentElement =
   document.getElementById("monthly-payment");
 
 const budgetSummaryTotalElement =
-  document.getElementById("budget-summary-total");
+  document.getElementById(
+    "budget-summary-total"
+  );
 
 const landPriceElement =
   document.getElementById("land-price");
@@ -55,35 +62,55 @@ const chartElement =
   document.getElementById("budget-chart");
 
 const chartTotalBudgetElement =
-  document.getElementById("chart-total-budget");
+  document.getElementById(
+    "chart-total-budget"
+  );
 
 const chartBuildingPriceElement =
-  document.getElementById("chart-building-price");
+  document.getElementById(
+    "chart-building-price"
+  );
 
 const chartLandPriceElement =
-  document.getElementById("chart-land-price");
+  document.getElementById(
+    "chart-land-price"
+  );
 
 const chartOtherPriceElement =
-  document.getElementById("chart-other-price");
+  document.getElementById(
+    "chart-other-price"
+  );
 
 
 const buildingChartLabel =
-  document.getElementById("building-chart-label");
+  document.getElementById(
+    "building-chart-label"
+  );
 
 const landChartLabel =
-  document.getElementById("land-chart-label");
+  document.getElementById(
+    "land-chart-label"
+  );
 
 const costChartLabel =
-  document.getElementById("cost-chart-label");
+  document.getElementById(
+    "cost-chart-label"
+  );
 
 const buildingChartAmount =
-  document.getElementById("building-chart-amount");
+  document.getElementById(
+    "building-chart-amount"
+  );
 
 const landChartAmount =
-  document.getElementById("land-chart-amount");
+  document.getElementById(
+    "land-chart-amount"
+  );
 
 const costChartAmount =
-  document.getElementById("cost-chart-amount");
+  document.getElementById(
+    "cost-chart-amount"
+  );
 
 
 /* =========================
@@ -91,19 +118,29 @@ const costChartAmount =
 ========================= */
 
 const resultLoanAmountElement =
-  document.getElementById("result-loan-amount");
+  document.getElementById(
+    "result-loan-amount"
+  );
 
 const resultOwnFundsElement =
-  document.getElementById("result-own-funds");
+  document.getElementById(
+    "result-own-funds"
+  );
 
 const resultYearsElement =
-  document.getElementById("result-years");
+  document.getElementById(
+    "result-years"
+  );
 
 const resultRateElement =
-  document.getElementById("result-rate");
+  document.getElementById(
+    "result-rate"
+  );
 
 const resultTotalBudgetElement =
-  document.getElementById("result-total-budget");
+  document.getElementById(
+    "result-total-budget"
+  );
 
 
 /* =========================
@@ -111,22 +148,50 @@ const resultTotalBudgetElement =
 ========================= */
 
 const budgetWarningElement =
-  document.getElementById("budget-warning");
+  document.getElementById(
+    "budget-warning"
+  );
 
 const validationSummaryElement =
-  document.getElementById("validation-summary");
+  document.getElementById(
+    "validation-summary"
+  );
 
 const otherCostList =
-  document.getElementById("other-cost-list");
+  document.getElementById(
+    "other-cost-list"
+  );
 
 const otherCostTotalElement =
-  document.getElementById("other-cost-total");
+  document.getElementById(
+    "other-cost-total"
+  );
 
 const addCostButton =
-  document.getElementById("add-cost-button");
+  document.getElementById(
+    "add-cost-button"
+  );
 
 const resetButton =
-  document.getElementById("reset-button");
+  document.getElementById(
+    "reset-button"
+  );
+
+
+/* =========================
+   デフォルト値
+========================= */
+
+const DEFAULT_EXPENSES = 200;
+
+const DEFAULT_OTHER_COSTS = [
+  100, // 外構
+  330, // 付帯工事
+  80,  // 地盤改良
+  85,  // 浄化槽
+  110, // 資材高騰
+  100  // オプション
+];
 
 
 /* =========================
@@ -154,7 +219,8 @@ function getOtherCostsTotal() {
   let total = 0;
 
   inputs.forEach((input) => {
-    total += Number(input.value) || 0;
+    total +=
+      Number(input.value) || 0;
   });
 
   return total;
@@ -179,8 +245,10 @@ function calculateLoanAmount(
     return 0;
   }
 
+
   const numberOfPayments =
     years * 12;
+
 
   const monthlyInterestRate =
     annualInterestRate /
@@ -195,7 +263,9 @@ function calculateLoanAmount(
     月々返済額 × 支払回数
   */
 
-  if (monthlyInterestRate === 0) {
+  if (
+    monthlyInterestRate === 0
+  ) {
     return (
       monthlyPayment *
       numberOfPayments
@@ -244,8 +314,10 @@ function calculateMonthlyPayment(
   const principal =
     loanAmount * 10000;
 
+
   const numberOfPayments =
     years * 12;
+
 
   const monthlyInterestRate =
     annualInterestRate /
@@ -253,7 +325,9 @@ function calculateMonthlyPayment(
     12;
 
 
-  if (monthlyInterestRate === 0) {
+  if (
+    monthlyInterestRate === 0
+  ) {
     return (
       principal /
       numberOfPayments
@@ -287,6 +361,7 @@ function calculateMonthlyPayment(
 function validateInputs() {
   const errors = [];
 
+
   const numberInputs = [
     rentInput,
     additionalPaymentInput,
@@ -303,13 +378,16 @@ function validateInputs() {
       'input[type="number"]'
     )
     .forEach((input) => {
+
       input.classList.remove(
         "input-error"
       );
+
     });
 
 
   numberInputs.forEach((input) => {
+
     if (!input) {
       return;
     }
@@ -327,12 +405,15 @@ function validateInputs() {
         "金額や金利には0以上の値を入力してください。"
       );
     }
+
   });
 
 
   if (
     hasValue(repaymentYearsInput) &&
-    Number(repaymentYearsInput.value) <= 0
+    Number(
+      repaymentYearsInput.value
+    ) <= 0
   ) {
     repaymentYearsInput.classList.add(
       "input-error"
@@ -362,6 +443,7 @@ function validateInputs() {
           "その他費用には0以上の値を入力してください。"
         );
       }
+
     });
 
 
@@ -369,9 +451,13 @@ function validateInputs() {
     [...new Set(errors)];
 
 
-  if (validationSummaryElement) {
+  if (
+    validationSummaryElement
+  ) {
 
-    if (uniqueErrors.length === 0) {
+    if (
+      uniqueErrors.length === 0
+    ) {
 
       validationSummaryElement.hidden =
         true;
@@ -391,11 +477,14 @@ function validateInputs() {
               `・${error}`
           )
           .join("<br>");
+
     }
   }
 
 
-  return uniqueErrors.length === 0;
+  return (
+    uniqueErrors.length === 0
+  );
 }
 
 
@@ -415,12 +504,17 @@ function positionChartLabel(
 
 
   const middleAngle =
-    (startAngle + endAngle) / 2;
+    (
+      startAngle +
+      endAngle
+    ) /
+    2;
 
 
   const radians =
     (
-      middleAngle - 90
+      middleAngle -
+      90
     ) *
     Math.PI /
     180;
@@ -439,6 +533,7 @@ function positionChartLabel(
   const x =
     Math.cos(radians) *
     radius;
+
 
   const y =
     Math.sin(radians) *
@@ -469,28 +564,85 @@ function calculate() {
 
 
   const rent =
-    Number(rentInput?.value) || 0;
+    Number(
+      rentInput?.value
+    ) || 0;
+
 
   const additionalPayment =
-    Number(additionalPaymentInput?.value) || 0;
+    Number(
+      additionalPaymentInput?.value
+    ) || 0;
+
 
   const ownFunds =
-    Number(ownFundsInput?.value) || 0;
+    Number(
+      ownFundsInput?.value
+    ) || 0;
+
 
   const repaymentYears =
-    Number(repaymentYearsInput?.value) || 0;
+    Number(
+      repaymentYearsInput?.value
+    ) || 0;
+
 
   const annualInterestRate =
-    Number(interestRateInput?.value) || 0;
+    Number(
+      interestRateInput?.value
+    ) || 0;
+
+
+  /*
+    建物価格は
+    税抜価格を入力
+  */
 
   const buildingPrice =
-    Number(buildingPriceInput?.value) || 0;
+    Number(
+      buildingPriceInput?.value
+    ) || 0;
+
+
+  /*
+    消費税10%を加えて
+    税込価格を求める
+
+    万円単位なので、
+    小数第1位まで保持
+  */
+
+  const buildingPriceTaxIncluded =
+    Math.round(
+      buildingPrice *
+      1.1 *
+      10
+    ) /
+    10;
+
 
   const expenses =
-    Number(expensesInput?.value) || 0;
+    Number(
+      expensesInput?.value
+    ) || 0;
+
 
   const otherCosts =
     getOtherCostsTotal();
+
+
+  /* =========================
+     建物価格（税込）
+  ========================= */
+
+  if (
+    buildingPriceTaxIncludedElement
+  ) {
+    buildingPriceTaxIncludedElement.textContent =
+      hasValue(buildingPriceInput)
+        ? buildingPriceTaxIncluded.toLocaleString()
+        : "－";
+  }
 
 
   /* =========================
@@ -504,10 +656,14 @@ function calculate() {
 
   const hasMonthlyBudget =
     hasValue(rentInput) ||
-    hasValue(additionalPaymentInput);
+    hasValue(
+      additionalPaymentInput
+    );
 
 
-  if (monthlyBudgetElement) {
+  if (
+    monthlyBudgetElement
+  ) {
     monthlyBudgetElement.textContent =
       hasMonthlyBudget
         ? monthlyBudget.toLocaleString()
@@ -522,16 +678,22 @@ function calculate() {
   const hasLoanCalculation =
     hasMonthlyBudget &&
     monthlyBudget > 0 &&
-    hasValue(repaymentYearsInput) &&
+    hasValue(
+      repaymentYearsInput
+    ) &&
     repaymentYears > 0 &&
-    hasValue(interestRateInput) &&
+    hasValue(
+      interestRateInput
+    ) &&
     annualInterestRate >= 0;
 
 
   let loanAmount = 0;
 
 
-  if (hasLoanCalculation) {
+  if (
+    hasLoanCalculation
+  ) {
 
     const loanAmountYen =
       calculateLoanAmount(
@@ -542,12 +704,7 @@ function calculate() {
 
 
     /*
-      万円単位で切り捨てる。
-
-      例：
-      2,777.8万円
-      ↓
-      2,777万円
+      万円単位で切り捨て
     */
 
     loanAmount =
@@ -558,7 +715,9 @@ function calculate() {
   }
 
 
-  if (loanAmountElement) {
+  if (
+    loanAmountElement
+  ) {
     loanAmountElement.textContent =
       hasLoanCalculation
         ? loanAmount.toLocaleString()
@@ -577,10 +736,14 @@ function calculate() {
 
   const hasTotalBudget =
     hasLoanCalculation ||
-    hasValue(ownFundsInput);
+    hasValue(
+      ownFundsInput
+    );
 
 
-  if (totalBudgetElement) {
+  if (
+    totalBudgetElement
+  ) {
     totalBudgetElement.textContent =
       hasTotalBudget
         ? totalBudget.toLocaleString()
@@ -588,7 +751,9 @@ function calculate() {
   }
 
 
-  if (budgetSummaryTotalElement) {
+  if (
+    budgetSummaryTotalElement
+  ) {
     budgetSummaryTotalElement.textContent =
       hasTotalBudget
         ? totalBudget.toLocaleString()
@@ -596,7 +761,9 @@ function calculate() {
   }
 
 
-  if (resultTotalBudgetElement) {
+  if (
+    resultTotalBudgetElement
+  ) {
     resultTotalBudgetElement.textContent =
       hasTotalBudget
         ? totalBudget.toLocaleString()
@@ -618,7 +785,9 @@ function calculate() {
       : 0;
 
 
-  if (monthlyPaymentElement) {
+  if (
+    monthlyPaymentElement
+  ) {
     monthlyPaymentElement.textContent =
       hasLoanCalculation
         ? Math.round(
@@ -632,7 +801,9 @@ function calculate() {
      その他費用
   ========================= */
 
-  if (otherCostTotalElement) {
+  if (
+    otherCostTotalElement
+  ) {
     otherCostTotalElement.textContent =
       otherCosts.toLocaleString();
   }
@@ -640,16 +811,20 @@ function calculate() {
 
   /* =========================
      土地価格
+
+     ※ 建物は税込価格を使用
   ========================= */
 
   const landPrice =
     totalBudget -
-    buildingPrice -
+    buildingPriceTaxIncluded -
     expenses -
     otherCosts;
 
 
-  if (landPriceElement) {
+  if (
+    landPriceElement
+  ) {
     landPriceElement.textContent =
       hasTotalBudget
         ? landPrice.toLocaleString()
@@ -661,7 +836,9 @@ function calculate() {
      試算結果一覧
   ========================= */
 
-  if (resultLoanAmountElement) {
+  if (
+    resultLoanAmountElement
+  ) {
     resultLoanAmountElement.textContent =
       hasLoanCalculation
         ? loanAmount.toLocaleString()
@@ -669,25 +846,37 @@ function calculate() {
   }
 
 
-  if (resultOwnFundsElement) {
+  if (
+    resultOwnFundsElement
+  ) {
     resultOwnFundsElement.textContent =
-      hasValue(ownFundsInput)
+      hasValue(
+        ownFundsInput
+      )
         ? ownFunds.toLocaleString()
         : "－";
   }
 
 
-  if (resultYearsElement) {
+  if (
+    resultYearsElement
+  ) {
     resultYearsElement.textContent =
-      hasValue(repaymentYearsInput)
+      hasValue(
+        repaymentYearsInput
+      )
         ? repaymentYears.toLocaleString()
         : "－";
   }
 
 
-  if (resultRateElement) {
+  if (
+    resultRateElement
+  ) {
     resultRateElement.textContent =
-      hasValue(interestRateInput)
+      hasValue(
+        interestRateInput
+      )
         ? annualInterestRate.toLocaleString()
         : "－";
   }
@@ -697,7 +886,9 @@ function calculate() {
      土地マイナス警告
   ========================= */
 
-  if (budgetWarningElement) {
+  if (
+    budgetWarningElement
+  ) {
     budgetWarningElement.hidden =
       !(
         hasTotalBudget &&
@@ -715,7 +906,9 @@ function calculate() {
     otherCosts;
 
 
-  if (chartTotalBudgetElement) {
+  if (
+    chartTotalBudgetElement
+  ) {
     chartTotalBudgetElement.textContent =
       hasTotalBudget
         ? totalBudget.toLocaleString()
@@ -723,13 +916,22 @@ function calculate() {
   }
 
 
-  if (chartBuildingPriceElement) {
+  /*
+    円グラフの建物価格も
+    税込価格を使用
+  */
+
+  if (
+    chartBuildingPriceElement
+  ) {
     chartBuildingPriceElement.textContent =
-      buildingPrice.toLocaleString();
+      buildingPriceTaxIncluded.toLocaleString();
   }
 
 
-  if (chartLandPriceElement) {
+  if (
+    chartLandPriceElement
+  ) {
     chartLandPriceElement.textContent =
       hasTotalBudget
         ? Math.max(
@@ -740,7 +942,9 @@ function calculate() {
   }
 
 
-  if (chartOtherPriceElement) {
+  if (
+    chartOtherPriceElement
+  ) {
     chartOtherPriceElement.textContent =
       totalCosts.toLocaleString();
   }
@@ -752,13 +956,19 @@ function calculate() {
     landPrice >= 0
   ) {
 
+    /*
+      建物割合も税込価格
+    */
+
     const buildingPercent =
-      buildingPrice /
+      buildingPriceTaxIncluded /
       totalBudget;
+
 
     const landPercent =
       landPrice /
       totalBudget;
+
 
     const costPercent =
       totalCosts /
@@ -768,6 +978,7 @@ function calculate() {
     const buildingEnd =
       buildingPercent *
       360;
+
 
     const landEnd =
       buildingEnd +
@@ -793,23 +1004,37 @@ function calculate() {
       `;
 
 
-    if (buildingChartAmount) {
+    /*
+      グラフ内の金額
+    */
+
+    if (
+      buildingChartAmount
+    ) {
       buildingChartAmount.textContent =
-        buildingPrice.toLocaleString();
+        buildingPriceTaxIncluded.toLocaleString();
     }
 
 
-    if (landChartAmount) {
+    if (
+      landChartAmount
+    ) {
       landChartAmount.textContent =
         landPrice.toLocaleString();
     }
 
 
-    if (costChartAmount) {
+    if (
+      costChartAmount
+    ) {
       costChartAmount.textContent =
         totalCosts.toLocaleString();
     }
 
+
+    /*
+      グラフ内ラベル位置
+    */
 
     positionChartLabel(
       buildingChartLabel,
@@ -835,15 +1060,23 @@ function calculate() {
     );
 
 
-    if (buildingChartLabel) {
+    /*
+      0円ならラベルを非表示
+    */
+
+    if (
+      buildingChartLabel
+    ) {
       buildingChartLabel.style.display =
-        buildingPrice > 0
+        buildingPriceTaxIncluded > 0
           ? "flex"
           : "none";
     }
 
 
-    if (landChartLabel) {
+    if (
+      landChartLabel
+    ) {
       landChartLabel.style.display =
         landPrice > 0
           ? "flex"
@@ -851,14 +1084,18 @@ function calculate() {
     }
 
 
-    if (costChartLabel) {
+    if (
+      costChartLabel
+    ) {
       costChartLabel.style.display =
         totalCosts > 0
           ? "flex"
           : "none";
     }
 
-  } else if (chartElement) {
+  } else if (
+    chartElement
+  ) {
 
     chartElement.style.background =
       "#e5e7eb";
@@ -868,14 +1105,16 @@ function calculate() {
       buildingChartLabel,
       landChartLabel,
       costChartLabel
-    ].forEach((label) => {
+    ].forEach(
+      (label) => {
 
-      if (label) {
-        label.style.display =
-          "none";
+        if (label) {
+          label.style.display =
+            "none";
+        }
+
       }
-
-    });
+    );
   }
 }
 
@@ -904,7 +1143,9 @@ document.addEventListener(
    その他費用追加
 ========================= */
 
-if (addCostButton) {
+if (
+  addCostButton
+) {
 
   addCostButton.addEventListener(
     "click",
@@ -953,6 +1194,7 @@ if (addCostButton) {
       otherCostList.appendChild(
         row
       );
+
     }
   );
 }
@@ -962,7 +1204,9 @@ if (addCostButton) {
    その他費用削除
 ========================= */
 
-if (otherCostList) {
+if (
+  otherCostList
+) {
 
   otherCostList.addEventListener(
     "click",
@@ -974,7 +1218,9 @@ if (otherCostList) {
         );
 
 
-      if (!deleteButton) {
+      if (
+        !deleteButton
+      ) {
         return;
       }
 
@@ -985,10 +1231,14 @@ if (otherCostList) {
         );
 
 
-      if (row) {
+      if (
+        row
+      ) {
+
         row.remove();
 
         calculate();
+
       }
 
     }
@@ -1000,38 +1250,106 @@ if (otherCostList) {
    リセット
 ========================= */
 
-if (resetButton) {
+if (
+  resetButton
+) {
 
   resetButton.addEventListener(
     "click",
     () => {
 
-      document
-        .querySelectorAll(
-          'input[type="number"]'
-        )
-        .forEach((input) => {
+      /*
+        ユーザーが入力する
+        基本項目を空に戻す
+      */
 
-          input.value = "";
+      [
+        rentInput,
+        additionalPaymentInput,
+        ownFundsInput,
+        repaymentYearsInput,
+        interestRateInput,
+        buildingPriceInput
+      ].forEach(
+        (input) => {
+
+          if (input) {
+            input.value = "";
+
+            input.classList.remove(
+              "input-error"
+            );
+          }
+
+        }
+      );
+
+
+      /*
+        諸経費は
+        デフォルト200万円へ戻す
+      */
+
+      if (
+        expensesInput
+      ) {
+        expensesInput.value =
+          DEFAULT_EXPENSES;
+
+        expensesInput.classList.remove(
+          "input-error"
+        );
+      }
+
+
+      /*
+        その他費用も
+        デフォルト値へ戻す
+      */
+
+      const otherCostInputs =
+        document.querySelectorAll(
+          ".other-cost-amount"
+        );
+
+
+      otherCostInputs.forEach(
+        (input, index) => {
+
+          if (
+            DEFAULT_OTHER_COSTS[index] !==
+            undefined
+          ) {
+            input.value =
+              DEFAULT_OTHER_COSTS[index];
+          } else {
+            input.value = "";
+          }
+
 
           input.classList.remove(
             "input-error"
           );
 
-        });
+        }
+      );
 
 
-      if (validationSummaryElement) {
+      if (
+        validationSummaryElement
+      ) {
 
         validationSummaryElement.hidden =
           true;
 
         validationSummaryElement.innerHTML =
           "";
+
       }
 
 
       calculate();
+
     }
   );
 }
