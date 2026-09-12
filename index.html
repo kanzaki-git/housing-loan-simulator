@@ -260,7 +260,7 @@
 
       <div class="form-group">
         <label for="building-price">
-          建物価格（税込）
+          建物価格（税抜）
         </label>
 
         <div class="input-with-unit">
@@ -277,6 +277,25 @@
         </div>
       </div>
 
+      <div class="building-tax-result">
+        <div>
+          <span>
+            建物価格（税込）
+          </span>
+
+          <p>
+            税抜価格 ＋ 消費税10%
+          </p>
+        </div>
+
+        <strong>
+          <span id="building-price-tax-included">
+            －
+          </span>
+          万円
+        </strong>
+      </div>
+
 
       <div class="form-group">
         <label for="expenses">
@@ -288,7 +307,7 @@
             type="number"
             id="expenses"
             min="0"
-            placeholder="入力してください"
+            value="200"
           >
 
           <span>
@@ -334,6 +353,7 @@
                     type="number"
                     class="other-cost-amount"
                     min="0"
+                    value="100"
                   >
 
                   <span>万円</span>
@@ -360,6 +380,7 @@
                     type="number"
                     class="other-cost-amount"
                     min="0"
+                    value="330"
                   >
 
                   <span>万円</span>
@@ -386,6 +407,7 @@
                     type="number"
                     class="other-cost-amount"
                     min="0"
+                    value="80"
                   >
 
                   <span>万円</span>
@@ -412,6 +434,7 @@
                     type="number"
                     class="other-cost-amount"
                     min="0"
+                    value="85"
                   >
 
                   <span>万円</span>
@@ -438,6 +461,7 @@
                     type="number"
                     class="other-cost-amount"
                     min="0"
+                    value="110"
                   >
 
                   <span>万円</span>
@@ -464,6 +488,7 @@
                     type="number"
                     class="other-cost-amount"
                     min="0"
+                    value="100"
                   >
 
                   <span>万円</span>
